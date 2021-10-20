@@ -1,0 +1,25 @@
+BOX_IMAGE = "ubuntu/bionic64"
+
+Vagrant.configure("2") do |config|
+  config.vm.define "master" do |subconfig|
+    subconfig.vm.box = BOX_IMAGE
+    subconfig.vm.hostname = "master"
+    subconfig.vm.network :private_network, ip: "192.168.56.2"
+    
+  end
+
+  config.vm.define "node1" do |subconfig|
+    subconfig.vm.box = BOX_IMAGE # you can use different image here if you need
+    subconfig.vm.hostname = "node1"
+    subconfig.vm.network :private_network, ip: "192.168.56.3"
+  end
+
+  config.vm.define "node2" do |subconfig|
+    subconfig.vm.box = BOX_IMAGE
+    subconfig.vm.hostname = "node2"
+    subconfig.vm.network :private_network, ip: "192.168.56.4"
+  end
+  config.vm.provision "shell", inline: <<-SHELL
+  apt-get update && apt-get install -y avahi-daemon libnss-mdns
+  SHELL
+end
