@@ -1,0 +1,20 @@
+#vi: set ft=ruby
+BOX_PATH = 'hadhopp_image.box'
+
+Vagrant.configure("2") do |config|
+  config.vm.define "server=1"
+  
+    subconfig.vm.box = "server-1"
+    subconfig.vm.box_url = BOX_PATH 
+    subconfig.vm.hostname = "server-1"
+    subconfig.vm.network "private_network", ip: "192.168.56.1"
+    subconfig.vm.network "forward_port", guest: 9870, host: 9870
+    subconfig.vm.network "forward_port", guest: 8088, host: 8088
+    subconfig.vm.network "forward_port", guest: 8042, host: 8042
+    # subconfig.vm.synced_folder "../base", "/hadoop"
+    # subconfig.vm.synced_folder "../pseudo-distributed/hadoop-conf", "/hadoop-conf"
+    subconfig.vm.provider "virtualbox" do |v|
+      v.memory = 512
+    end
+  end
+end

@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+BOX_PATH = "hadoop_image.box"
+Vagrant.configure("2") do |config|
+  config.vm.define "server-10" do |subconfig|
+    subconfig.vm.box = "server-10"
+    subconfig.vm.box_url = BOX_PATH
+    subconfig.vm.hostname = "server-10"
+    subconfig.vm.network :private_network, ip: "192.168.67.2"
+    subconfig.vm.network "forwarded_port", guest: 5870, host: 5870 
+    subconfig.vm.network "forwarded_port", guest: 5088, host: 5088
+    subconfig.vm.network "forwarded_port", guest: 5042, host: 5042
+#    subconfig.vm.synced_folder "../base", "/hadoop"
+#    subconfig.vm.synced_folder "../pseudo-distributed/hadoop-conf", "/hadoop-conf"
+    subconfig.vm.provider "virtualbox" do |v|
+      v.memory = 512
+    end
+  end
+end
